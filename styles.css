@@ -1,0 +1,268 @@
+
+<style>
+
+html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --primary:  #21f3db;
+            --secondary: #FF6584;
+            --accent: #00D9C0;
+            --dark: #2E2E2E;
+            --light: #F8F9FA;
+            
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #263675, #A77BCA); /* Gradient from dark blue to light purple */
+            height: 100px; /* Adjust height as needed */
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+      
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        /* Navigation Menu */
+
+.nav-links {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20; /* Ensure the navigation is above other elements */
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+    display: inline-block;
+    padding: 5px 10px;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+     /* Pay Now Button in Navigation */
+
+.nav-links .pay-now-btn {
+    color: white;
+    font-size: 18px;
+    padding: 5px 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.nav-links .basic-pay-now {
+    background-color: #00c4b4;
+}
+
+.nav-links .basic-pay-now:hover {
+    background-color: #00a89a;
+    text-decoration: none;
+}
+
+        
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+            .logo {
+    position: absolute;
+    background-color: linear-gradient(90deg, #4B5EAA, #A77BCA); /* Gradient from dark blue to light purple */
+    top: 0px;
+    left: 0px;
+    width: 150px;
+    z-index: 10;
+        padding: 5px; /* Adds space inside the border */
+    
+}
+
+
+        .logo img {
+            background-color: linear-gradient(90deg, #4B5EAA, #A77BCA);
+            width: 120px; /* Adjust logo size as needed */
+            height: 95px;
+        }
+
+        /* Main content styling (to match the layout in the image) */
+        .content {
+            padding-top: 80px;
+            text-align: center;
+        }
+
+
+        
+
+        /* Contact Us Button in Discussion */
+        .contact-btn {
+            background-color: #00c4b4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .contact-btn:hover {
+            background-color: #00a89a;
+        }
+      /* Hidden Discussion Section */
+     
+     /* Hidden Discussion Section */
+     .discussion {
+            display: none; /* Hidden by default */
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+       
+
+
+/* Customer Portal */
+#customer-portal {
+    padding: 50px 20px;
+    text-align: center;
+    background-color: #f5f5f5;
+}
+
+#customer-portal h1 {
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+.portal-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.portal-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 300px;
+}
+
+.portal-section h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.portal-section p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+/* Payment History Table */
+#payment-history {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#payment-history th,
+#payment-history td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#payment-history th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+#payment-history td {
+    background-color: #f9f9f9;
+}
+
+/* Action Buttons */
+.action-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #00c4b4;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: #00a89a;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    #customer-portal {
+        padding: 30px 15px;
+    }
+
+    #customer-portal h1 {
+        font-size: 28px;
+    }
+
+    .portal-section {
+        min-width: 100%;
+    }
+
+    #payment-history th,
+    #payment-history td {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .action-button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}

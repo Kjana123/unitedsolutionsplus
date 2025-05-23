@@ -1,0 +1,18 @@
+<!-- payment-success.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment Successful</title>
+</head>
+<body>
+  <h1>Thank you for your payment!</h1>
+  <p>Your transaction was successful.</p>
+  <a href="https://www.unitedsolutionsplus.in">Go to Home</a>
+
+<script>
+    
+</script>
+
+</body>
+</html>
+

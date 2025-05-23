@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pay with Razorpay</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #75092d, #066353);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .payment-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(23, 51, 80, 0.3);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .payment-container h2 {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 20px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      outline: none;
+    }
+
+    input[type="number"]::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    button[type="submit"] {
+      background-color: #2fc03b;
+      color: white;
+      padding: 12px 25px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #008bd1;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      color: #00bfff;
+      text-decoration: none;
+      font-size: 0.95em;
+      transition: color 0.3s ease;
+    }
+
+    .back-btn:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 500px) {
+      .payment-container {
+        margin: 20px;
+        padding: 30px 20px;
+      }
+
+      input[type="number"], button[type="submit"] {
+        font-size: 0.95em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-container">
+    <h2>Enter Amount to Pay</h2>
+    <form id="paymentForm">
+      <input type="number" id="amount" placeholder="Enter amount in INR" required />
+      <button type="submit">Proceed to Pay</button>
+    </form>
+    <a href="https://unitedsolutionsplus.in" class="back-btn">← Back to Home</a>
+  </div>
+</body>
+</html>
+
+
+  <!-- Razorpay checkout script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <script>
+    // Attach a single submit handler to the form
+    document.getElementById('paymentForm').addEventListener('submit', openRazorpay);
+
+    async function openRazorpay(e) {
+      e.preventDefault();           // stop normal form submission
+
+      // read & validate the amount
+      const amount = parseInt(document.getElementById('amount').value, 10);
+      if (!amount || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+
+      try {
+        /* ------------------------------------------------------------------
+           1️⃣  Call your Node.js backend to create an order
+           (server must be running at http://localhost:5000/create-order)
+        ------------------------------------------------------------------ */
+        const res   = await fetch('http://localhost:5000/create-order', {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body   : JSON.stringify({ amount })          // amount in rupees
+        });
+        const order = await res.json();                // { id, amount, … }
+
+        /* ------------------------------------------------------------------
+           2️⃣  Configure & open Razorpay Checkout
+        ------------------------------------------------------------------ */
+        const options = {
+          key        : 'rzp_live_buDyJvlYXAHg07',         // 🔑 replace with real key
+          order_id   : order.id,
+          amount     : order.amount,                   // same amount that came back (in paise)
+          currency   : 'INR',
+          name       : 'United Solutions Plus',
+          description: 'Custom payment',
+          handler    : function (response) {
+            // ✅ Payment success → redirect
+            window.location.href = 'https://www.unitedsolutionsplus.in/payment-success';
+          },
+          modal: {
+            // ❌ Payment window closed/dismissed → stay here
+            ondismiss: function () { console.log('Checkout closed'); }
+          },
+          prefill: {
+            // optional – fill these if you have user data
+            name   : '',
+            email  : '',
+            contact: ''
+          },
+          theme: { color: '#007bff' }
+        };
+
+        new Razorpay(options).open();
+
+      } catch (err) {
+        console.error('Order creation failed:', err);
+        alert('Could not start payment. Please try again.');
+      }
+    }
+  </script>
+
+  <script>
+  document.getElementById("paymentForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const amount = parseInt(document.getElementById("amount").value);
+    if (!amount || amount <= 0) return alert("Enter valid amount");
+
+    // Create Razorpay order from your backend
+    const res = await fetch("http://localhost:5000/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount })
+    });
+    const order = await res.json();
+
+    const options = {
+      key: "rzp_live_buDyJvlYXAHg07", // replace with your Razorpay key
+      amount: order.amount,
+      currency: "INR",
+      name: "United Solutions Plus",
+      description: "Payment",
+      order_id: order.id,
+      handler: async function (response) {
+        // Send to backend for receipt & confirmation
+        await fetch("http://localhost:5000/payment-success", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            paymentId: response.razorpay_payment_id,
+            orderId: response.razorpay_order_id,
+            signature: response.razorpay_signature,
+            amount: amount
+          }),
+        });
+
+        alert("Payment Successful!");
+        window.location.href = "https://unitedsolutionsplus.in"; // redirect
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  });
+</script>
+
+</body>
+</html>
